@@ -81,7 +81,7 @@ public class TokenAirDropTest extends AirDropBase{
         return mainNulsApiHost;
     }
 
-    @Test
+    @Before
     public void before() throws InterruptedException {
         super.before();
     }
