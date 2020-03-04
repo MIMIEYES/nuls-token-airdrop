@@ -57,4 +57,24 @@ public class TokenAirdrop extends Ownable implements Contract {
         }
     }
 
+    public void airdropFromSender(Address nrc20, String from, String[] tos, String[] values) {
+        require(Msg.sender().equals(from), "Only the owner of the token can execute it.");
+        require(!Msg.address().equals(nrc20), "Do nothing by yourself");
+        require(nrc20.isContract(), "[" + nrc20.toString() + "] is not a contract address");
+        String to;
+        String value;
+        String[][] args;
+        String methodName;
+        for (int i = 0, len = tos.length; i < len; i++) {
+            to = tos[i];
+            value = values[i];
+            methodName = "transferFrom";
+            args = new String[][]{
+                    new String[]{from},
+                    new String[]{to},
+                    new String[]{value}};
+            nrc20.call(methodName, "(Address from, Address to, BigInteger value) return boolean", args, BigInteger.ZERO);
+        }
+    }
+
 }

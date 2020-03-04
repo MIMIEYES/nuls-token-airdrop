@@ -7,7 +7,7 @@
 
 	<groupId>io.nuls.contract</groupId>
     <artifactId>token-airdrop</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <name>token-airdrop</name>
 
 	<dependencies>
