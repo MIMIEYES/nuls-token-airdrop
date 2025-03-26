@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 import static io.nuls.v2.constant.Constant.CONTRACT_MINIMUM_PRICE;
@@ -114,6 +115,23 @@ public class TokenAirDropTest extends AirDropBase{
             }
             JSONArray list = jsonObject.getJSONArray("list");
             this.airdrop(list);
+        }
+    }
+
+    @Test
+    public void getContractTokens() throws InterruptedException, JsonProcessingException {
+        this.tokenContract = "NULSd6HgwJmD4SC1NAJXu8tC6NKsWs99P2jpw";
+        // 参数
+        int pageSize = 100;
+        for (int page = 1; page <= 12; page++) {
+            RpcResult result = JsonRpcUtil.request(publicServiceHost, "getContractTokens", ListUtil.of(chainId, page, pageSize, this.tokenContract));
+            Map map = (Map) result.getResult();
+            List<Map> dataList = (List<Map>) map.get("list");
+            for (Map data : dataList) {
+                String address = data.get("address").toString();
+                String balance = data.get("balance").toString();
+                System.out.println(address + "," + balance);
+            }
         }
     }
 

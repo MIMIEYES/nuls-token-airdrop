@@ -22,18 +22,46 @@ public class TokenAirdrop extends Ownable implements Contract {
         onlyOwner();
         require(!Msg.address().equals(nrc20), "Do nothing by yourself");
         require(nrc20.isContract(), "[" + nrc20.toString() + "] is not a contract address");
-        String to;
-        String value;
         String[][] args;
-        String methodName;
+        String methodName = "transfer";
         for (int i = 0, len = tos.length; i < len; i++) {
-            to = tos[i];
-            value = values[i];
-            methodName = "transfer";
             args = new String[][]{
-                    new String[]{to},
-                    new String[]{value}};
-            nrc20.call(methodName, "(Address to, BigInteger value) return boolean", args, BigInteger.ZERO);
+                    new String[]{tos[i]},
+                    new String[]{values[i]}};
+            nrc20.call(methodName, "", args, BigInteger.ZERO);
+        }
+    }
+
+    public void airdropLocked(Address nrc20, String[] tos, String[] values, long time) {
+        onlyOwner();
+        require(!Msg.address().equals(nrc20), "Do nothing by yourself");
+        require(nrc20.isContract(), "[" + nrc20.toString() + "] is not a contract address");
+        String[][] args;
+        String methodName = "transferLocked";
+        String[] timeArg = new String[]{time + ""};
+        for (int i = 0, len = tos.length; i < len; i++) {
+            args = new String[][]{
+                    new String[]{tos[i]},
+                    new String[]{values[i]},
+                    timeArg
+            };
+            nrc20.call(methodName, "", args, BigInteger.ZERO);
+        }
+    }
+
+    public void airdropLockedDiffTime(Address nrc20, String[] tos, String[] values, String[] times) {
+        onlyOwner();
+        require(!Msg.address().equals(nrc20), "Do nothing by yourself");
+        require(nrc20.isContract(), "[" + nrc20.toString() + "] is not a contract address");
+        String[][] args;
+        String methodName = "transferLocked";
+        for (int i = 0, len = tos.length; i < len; i++) {
+            args = new String[][]{
+                    new String[]{tos[i]},
+                    new String[]{values[i]},
+                    new String[]{times[i]}
+            };
+            nrc20.call(methodName, "", args, BigInteger.ZERO);
         }
     }
 
@@ -41,18 +69,14 @@ public class TokenAirdrop extends Ownable implements Contract {
         onlyOwner();
         require(!Msg.address().equals(nrc20), "Do nothing by yourself");
         require(nrc20.isContract(), "[" + nrc20.toString() + "] is not a contract address");
-        String to;
-        String value;
         String[][] args;
-        String methodName;
+        String methodName = "transferFrom";
+        String[] fromArg = new String[]{from};
         for (int i = 0, len = tos.length; i < len; i++) {
-            to = tos[i];
-            value = values[i];
-            methodName = "transferFrom";
             args = new String[][]{
-                    new String[]{from},
-                    new String[]{to},
-                    new String[]{value}};
+                    fromArg,
+                    new String[]{tos[i]},
+                    new String[]{values[i]}};
             nrc20.call(methodName, "(Address from, Address to, BigInteger value) return boolean", args, BigInteger.ZERO);
         }
     }
@@ -61,18 +85,14 @@ public class TokenAirdrop extends Ownable implements Contract {
         require(Msg.sender().equals(from), "Only the owner of the token can execute it.");
         require(!Msg.address().equals(nrc20), "Do nothing by yourself");
         require(nrc20.isContract(), "[" + nrc20.toString() + "] is not a contract address");
-        String to;
-        String value;
         String[][] args;
-        String methodName;
+        String methodName = "transferFrom";
+        String[] fromArg = new String[]{from};
         for (int i = 0, len = tos.length; i < len; i++) {
-            to = tos[i];
-            value = values[i];
-            methodName = "transferFrom";
             args = new String[][]{
-                    new String[]{from},
-                    new String[]{to},
-                    new String[]{value}};
+                    fromArg,
+                    new String[]{tos[i]},
+                    new String[]{values[i]}};
             nrc20.call(methodName, "(Address from, Address to, BigInteger value) return boolean", args, BigInteger.ZERO);
         }
     }
